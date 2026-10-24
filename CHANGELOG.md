@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1
+
+- Add the Neat CSV logo to the extension listing and project guides.
+
 ## 0.1.0
 
 Initial release preparation.

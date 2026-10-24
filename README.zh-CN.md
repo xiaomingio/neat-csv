@@ -1,3 +1,5 @@
+<img src="assets/icon.png" width="96" height="96" alt="Neat CSV logo">
+
 # Neat CSV - Spreadsheet Editor
 
 [English](README.md) | 简体中文

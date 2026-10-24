@@ -2,7 +2,7 @@
   "name": "neat-csv",
   "displayName": "Neat CSV - Spreadsheet Editor",
   "description": "Open large CSV and TSV files quickly. Edit in a spreadsheet, or use aligned, color-coded text with block editing.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "xiaomingio",
   "license": "AGPL-3.0-only",
   "engines": {
@@ -139,5 +139,6 @@
     "@azure/identity": {
       "@azure/msal-node": "^7.1.1"
     }
-  }
+  },
+  "icon": "assets/icon.png"
 }
