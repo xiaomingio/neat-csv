@@ -1,0 +1,6 @@
+{
+  "workbench.editorAssociations": {
+    "*.csv": "vscode-csv.editor",
+    "*.tsv": "vscode-csv.editor"
+  }
+}

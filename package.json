@@ -1,0 +1,143 @@
+{
+  "name": "neat-csv",
+  "displayName": "Neat CSV - Spreadsheet Editor",
+  "description": "Open large CSV and TSV files quickly. Edit in a spreadsheet, or use aligned, color-coded text with block editing.",
+  "version": "0.1.0",
+  "publisher": "xiaomingio",
+  "license": "AGPL-3.0-only",
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "languages": [
+      {
+        "id": "csv",
+        "aliases": [
+          "CSV",
+          "Comma-separated values"
+        ],
+        "extensions": [
+          ".csv"
+        ],
+        "mimetypes": [
+          "text/csv"
+        ]
+      },
+      {
+        "id": "tsv",
+        "aliases": [
+          "TSV",
+          "Tab-separated values"
+        ],
+        "extensions": [
+          ".tsv"
+        ],
+        "mimetypes": [
+          "text/tab-separated-values"
+        ]
+      }
+    ],
+    "customEditors": [
+      {
+        "viewType": "vscode-csv.editor",
+        "displayName": "Neat CSV",
+        "selector": [
+          {
+            "filenamePattern": "*.csv"
+          },
+          {
+            "filenamePattern": "*.tsv"
+          }
+        ],
+        "priority": "default"
+      }
+    ],
+    "commands": [
+      {
+        "command": "vscode-csv.open",
+        "title": "Neat CSV: Open File"
+      }
+    ],
+    "configuration": {
+      "title": "Neat CSV",
+      "properties": {
+        "vscode-csv.backup.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Keep recovery versions before overwriting CSV files."
+        },
+        "vscode-csv.backup.maxStorageMB": {
+          "type": "number",
+          "default": 500,
+          "minimum": 1,
+          "description": "Maximum disk space in MB for all recovery versions. Oldest versions are removed automatically."
+        },
+        "vscode-csv.backup.largeFileWarningMB": {
+          "type": "number",
+          "default": 50,
+          "minimum": 0,
+          "description": "Ask whether to create a recovery version before overwriting files larger than this size in MB."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "vscode:prepublish": "npm run typecheck && npm run build",
+    "package": "mkdir -p release && vsce package --readme-path MARKETPLACE.md --no-dependencies --githubBranch main --out release/",
+    "test:ui": "npm run build && playwright test",
+    "screenshots": "npm run build && node --import tsx scripts/capture-screenshots.ts"
+  },
+  "dependencies": {
+    "@codemirror/commands": "^6.11.1",
+    "@codemirror/search": "^6.7.2",
+    "@codemirror/state": "^6.7.6",
+    "@codemirror/view": "^6.43.15",
+    "csv-parse": "^7.0.3",
+    "iconv-lite": "^0.7.3",
+    "re2js": "^2.9.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.5",
+    "@types/vscode": "^1.95.0",
+    "@vscode/vsce": "^4.0.0",
+    "esbuild": "^0.28.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "private": true,
+  "keywords": [
+    "csv",
+    "tsv",
+    "csv editor",
+    "csv viewer",
+    "spreadsheet",
+    "table",
+    "large files",
+    "filter",
+    "sort",
+    "data",
+    "data editor"
+  ],
+  "homepage": "https://github.com/xiaomingio/neat-csv",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xiaomingio/neat-csv.git"
+  },
+  "bugs": {
+    "url": "https://github.com/xiaomingio/neat-csv/issues"
+  },
+  "overrides": {
+    "@azure/identity": {
+      "@azure/msal-node": "^7.1.1"
+    }
+  }
+}

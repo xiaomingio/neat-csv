@@ -1,0 +1,9 @@
+**/*
+!package.json
+!MARKETPLACE.md
+!LICENSE
+!CHANGELOG.md
+!dist/extension.js
+!dist/worker.js
+!dist/grid.js
+!dist/style.css
