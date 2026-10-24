@@ -18,7 +18,7 @@ See the [feature guide and screenshots](MARKETPLACE.md).
 
 ## Install and open
 
-Requires desktop VS Code 1.95 or newer. Install the VSIX from `release/` using **Extensions → Install from VSIX…**, then open a CSV or TSV file. Use **Reopen Editor With → Neat CSV** if needed.
+Requires desktop VS Code 1.95 or newer. Install [Neat CSV from the Marketplace](https://marketplace.visualstudio.com/items?itemName=xiaomingio.neat-csv), then open a CSV or TSV file. Use **Reopen Editor With → Neat CSV** if needed. You can also install a VSIX using **Extensions → Install from VSIX…**.
 
 ## Development
 

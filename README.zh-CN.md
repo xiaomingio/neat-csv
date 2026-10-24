@@ -18,7 +18,7 @@
 
 ## 安装与打开
 
-需要桌面版 VS Code 1.95 或更新版本。通过 **Extensions → Install from VSIX…** 安装 `release/` 中的 VSIX，然后打开 CSV 或 TSV。必要时使用 **Reopen Editor With → Neat CSV**。
+需要桌面版 VS Code 1.95 或更新版本。从 [Marketplace 安装 Neat CSV](https://marketplace.visualstudio.com/items?itemName=xiaomingio.neat-csv)，然后打开 CSV 或 TSV。必要时使用 **Reopen Editor With → Neat CSV**。也可通过 **Extensions → Install from VSIX…** 安装 VSIX。
 
 ## 本地开发
 
