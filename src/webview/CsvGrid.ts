@@ -278,6 +278,12 @@ export class CsvGrid {
     document.addEventListener('keydown', event => {
       if (event.key === 'Escape') this.closeMenu();
       if (!(event.ctrlKey || event.metaKey) || this.promptDialog.open || this.fileDialogs.open || this.guide.open || this.dataTools.open) return;
+      if (event.key.toLowerCase() === 'a' && !this.textEditor.visible && !this.inlineEditor.open
+        && !(event.target instanceof Element && event.target.closest('input, textarea, [contenteditable=true]'))) {
+        event.preventDefault(); event.stopPropagation();
+        if (!this.clipboard.busy) this.selectAllCells();
+        return;
+      }
       if (event.key.toLowerCase() === 'f') { event.preventDefault(); event.stopPropagation(); void this.performTool(() => this.dataTools.search()); }
       if (event.key.toLowerCase() === 's') { event.preventDefault(); void this.save(event.shiftKey ? 'saveAs' : 'save'); }
       if (event.key.toLowerCase() === 'z' && this.inlineEditor.open) return;
@@ -852,14 +858,10 @@ export class CsvGrid {
     corner.setAttribute('aria-label', t('Select all cells'));
     corner.dataset.tooltip = t('Click: select all cells · Right-click: insert rows or columns');
     corner.classList.toggle('axis-selected', this.selection.isAll(this.total, this.visualColumns.length));
-    const selectAll = () => {
-      this.selected = undefined; this.selection.selectAll(); window.getSelection()?.removeAllRanges();
-      this.viewport.focus({ preventScroll: true }); this.paintSelection();
-    };
-    corner.addEventListener('click', selectAll);
+    corner.addEventListener('click', () => this.selectAllCells());
     corner.addEventListener('contextmenu', event => { event.preventDefault(); event.stopPropagation(); this.openTableMenu(event.clientX, event.clientY); });
     corner.addEventListener('keydown', event => {
-      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectAll(); }
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); this.selectAllCells(); }
       else if (event.key === 'ContextMenu' || (event.shiftKey && event.key === 'F10')) {
         event.preventDefault(); const rect = corner.getBoundingClientRect(); this.openTableMenu(rect.left, rect.bottom);
       }
@@ -1714,11 +1716,13 @@ export class CsvGrid {
     });
   }
 
+  private selectAllCells(): void {
+    this.selected = undefined; this.selection.selectAll(); window.getSelection()?.removeAllRanges();
+    this.viewport.focus({ preventScroll: true }); this.paintSelection();
+  }
+
   private keydown(event: KeyboardEvent): void {
     if (event.key === 'Escape' && this.clipboardMarker) { event.preventDefault(); this.clipboardMarker = undefined; this.paintSelection(); return; }
-    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'a') {
-      event.preventDefault(); this.selected = undefined; this.selection.selectAll(); this.paintSelection(); return;
-    }
     if (event.key === 'Enter' && this.selected) { event.preventDefault(); this.openCell(this.selected); return; }
     if ((event.ctrlKey || event.metaKey) && ['c', 'x', 'v'].includes(event.key.toLowerCase())) {
       if (!this.selectionRequest()) return;

@@ -2365,6 +2365,31 @@ test('changing language preserves unsaved Text edits and the insertion position'
   expect(await readFile(path, 'utf8')).toBe(original);
 });
 
+for (const modifier of ['Control', 'Meta']) test(`${modifier}+A selects all table cells from page, heading, toolbar and grid focus`, async ({ page }) => {
+  for (const target of ['body', '.column-heading[data-col="0"]', '.toolbar button', '.viewport']) {
+    await page.locator(target).first().evaluate(node => (node as HTMLElement).focus());
+    await page.keyboard.press(`${modifier}+a`);
+    await expect(page.locator('.status')).toContainText('600 rows × 7 columns');
+    await expect(page.locator('[role="gridcell"][aria-selected="false"]')).toHaveCount(0);
+    expect(await page.evaluate(() => window.getSelection()?.toString())).toBe('');
+    await page.locator('[role="gridcell"]').first().click();
+  }
+});
+
+test('Select all preserves native text selection in cell editing and filter inputs', async ({ page }) => {
+  await page.locator('[role="gridcell"]').first().dblclick();
+  const input = page.getByRole('textbox', { name: 'Cell value', exact: true });
+  await input.evaluate(node => (node as HTMLTextAreaElement).setSelectionRange(1, 1));
+  await input.press('ControlOrMeta+a');
+  expect(await input.evaluate(node => { const input = node as HTMLTextAreaElement; return input.value.slice(input.selectionStart, input.selectionEnd); })).toBe('Product 600');
+  await input.press('Escape');
+  await page.locator('.column-filter-button').first().click();
+  const filter = page.getByRole('textbox', { name: 'Filter column by text' });
+  await filter.fill('Product'); await filter.press('ControlOrMeta+a');
+  expect(await filter.evaluate(node => { const input = node as HTMLInputElement; return input.value.slice(input.selectionStart ?? 0, input.selectionEnd ?? 0); })).toBe('Product');
+  await expect(page.locator('.status')).not.toContainText('600 rows × 7 columns');
+});
+
 test('Corner selects the whole table and double-clicking separators fits every column and visible row', async ({ page }) => {
   await page.getByRole('button', { name: 'Select all cells', exact: true }).click();
   await expect(page.locator('.status')).toContainText('600 rows × 7 columns');
